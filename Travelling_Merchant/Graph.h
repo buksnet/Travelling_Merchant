@@ -15,14 +15,16 @@ struct vertex {
 
 class graph
 {
+    vector<vector<int>> datamatrix;
 public:
     typedef map<string, vertex*> vmap; // dict of string and vertex (name: vertex)
     vmap work;
-    int** getmatrix();
+    void initmatrix();
     void connectAll(const string&);
     void addvertex(const string&);
     void addedge(const string& from, const string& to, const double& cost);
     void removeedge(const string&);
     void solve();
-    void brute_force();
+    void empty_space();
+    static void underscore(int q);
 };
