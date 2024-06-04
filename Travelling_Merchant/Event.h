@@ -3,7 +3,6 @@
 const short int add_edge = 1;
 const short int remove_edge = 2;
 const short int find_way = 3;
-const short int brute_force = 4;
 
 
 

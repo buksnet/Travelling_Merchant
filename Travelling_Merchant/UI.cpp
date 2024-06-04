@@ -45,6 +45,7 @@ void UI::draw() {
         glfwGetFramebufferSize(root, &width, &height);
         glClear(GL_COLOR_BUFFER_BIT);
         clear_names();
+        glLineWidth(1.f);
         glViewport(0, 0, width, height);
         int i = 0, j = 0;
         float theta, x, y, x1, y1, x2, y2;
@@ -92,6 +93,7 @@ void UI::draw() {
             put_name(it.second->name, x, y);
             i++;
         }
+        if (hasSolution) draw_solution();
         Sleep(0.1);
         glfwSwapBuffers(root);
         glfwPollEvents();
@@ -136,7 +138,6 @@ void UI::draw_edge(float x1, float y1, float x2, float y2) {
     glEnd();
 }
 
-
 void UI::put_name(string& name, GLfloat x, GLfloat y) {
     bool f = false;
     for (auto const& gr : (*graph_ptr).work) {
@@ -158,4 +159,39 @@ void UI::clear_names() {
         gltDeleteText(text);
     }
     texts.clear();
+}
+
+void UI::solve_init(vector<pair<int, int>> arg)
+{
+    data = arg;
+    hasSolution = true;
+}
+
+vector<pair<float, float>> UI::fetch_coordinates(pair<int, int> coord, int q) {
+    float theta = 2.0f * 3.1415926f * float(coord.first - 1) / float(q), x, y, x1, y1;
+    vector < pair<float, float>> result;
+    pair<float, float> one, two;
+    one.first = 0.55 * cosf(theta);
+    one.second = 0.55 * sinf(theta);
+    
+    theta = 2.0f * 3.1415926f * float(coord.second-1) / float(q);
+    two.first = 0.55 * cosf(theta);
+    two.second = 0.55 * sinf(theta);
+    result.push_back(one);
+    result.push_back(two);
+    return result;
+}
+
+void UI::draw_solution()
+{
+    vector<pair<float, float>> coord;
+    for (vector<pair<int, int>>::iterator it = data.begin(); it != data.end(); it++) {
+        glColor3f(0.f, 0.5f, 0.f);
+        glLineWidth(5.f);
+        glBegin(GL_LINES);
+        coord = fetch_coordinates((*it), data.size());
+        glVertex2f(coord[0].first-0.02, coord[0].second+0.18);
+        glVertex2f(coord[1].first-0.02, coord[1].second+0.18);
+        glEnd();
+    }
 }

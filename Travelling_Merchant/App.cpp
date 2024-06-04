@@ -24,8 +24,7 @@ void TSApp::run(){
 		cout << endl << "Travelling salesman problem solver. Pick an action:" << endl <<
 			"'1' - Add edge to graph and visualise it;" << endl <<
 			"'2' - Remove edge from graph and visualization;" << endl <<
-			"'3' - Find an optimal way to visit all edges." << endl <<
-			"'4' - Find an optimal way to visit all edges by brute-force" << endl <<
+			"'3' - Find an optimal way to visit all verticles." << endl <<
 			"'9' - Render the graph" << endl << 
 			"'0' - Exit program" << endl << endl << ">>>";
 		this->getEvent(ev);
@@ -59,11 +58,20 @@ void TSApp::response(Event& ev) {
 			break;
 		}
 		case find_way:
-			ts.solve();
+		{	
+			ts.initmatrix();
+			LittleAlgorithm alg(ts.datamatrix);
+			vector<pair<int, int>> data = alg.run();
+			cout << ts.datamatrix[data[0].first-1][data[0].second-1];
+			int sum = ts.datamatrix[data[0].first - 1][data[0].second - 1];
+			for (int i = 1; i < data.size(); i++) {
+				sum += ts.datamatrix[data[i].first - 1][data[i].second - 1];
+				cout << " + " << ts.datamatrix[data[i].first - 1][data[i].second - 1];
+			}
+			cout << " = " << sum << endl;
+			gui.solve_init(data);
 			break;
-		case brute_force:
-			ts.brute_force();
-			break;
+		}
 		case 9:
 			gui.draw();
 			break;
