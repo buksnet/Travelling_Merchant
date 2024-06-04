@@ -179,6 +179,7 @@ void LittleAlgorithm::matrixProcedure(vector<vector<int>> matrix)
 		if ((min = getMin(matrix, i, check::Row)) == INT32_MAX) {
 			showMatrix(matrix);
 			cout << endl << "Bad road" << endl;
+			block = false;
 			return;
 		}
 		if ((min = getMin(matrix, i, check::Row)) != 0)
@@ -192,6 +193,7 @@ void LittleAlgorithm::matrixProcedure(vector<vector<int>> matrix)
 		if ((min = getMin(matrix, i, check::Col)) == INT32_MAX) {
 			showMatrix(matrix);
 			std::cout << endl << "Bad road" << endl;
+			block = false;
 			return;
 		}
 		if ((min = getMin(matrix, i, check::Col)) != 0)
@@ -230,6 +232,7 @@ void LittleAlgorithm::matrixProcedure(vector<vector<int>> matrix)
 	//Завершаем выполнение данной ветви если нету нулей
 	if (Maxs.size() == 0) {
 		std::cout << "Bad road." << endl;
+		block = false;
 		return;
 	}
 
@@ -241,7 +244,7 @@ void LittleAlgorithm::matrixProcedure(vector<vector<int>> matrix)
 			for (int i = 0; i < result.size(); i++)
 				std::cout << "(" << result[i].first << ", " << result[i].second << ")\t";
 			std::cout << endl;
-			if (export_result.empty()) {
+			if (export_result.empty() && !result.empty()) {
 				export_result = result;
 				block = true;
 			}
